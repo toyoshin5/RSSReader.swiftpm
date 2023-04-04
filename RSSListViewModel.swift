@@ -13,7 +13,9 @@ class RSSListViewModel: ObservableObject{
     func getRSSList(){
         rssList = []
         var data = UserDefaults.standard.string(forKey: "rss_key") ?? ""
-        data.removeLast()
+        if !data.isEmpty{
+            data.removeLast()
+        }
         let rssListData = data.split(separator: ",")
         print(data)
         for rssData in rssListData{

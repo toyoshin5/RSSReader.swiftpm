@@ -17,11 +17,10 @@ class MainViewModel: ObservableObject {
         let dispatchGroup = DispatchGroup()
         //取得したいRSSを指定
         var data = UserDefaults.standard.string(forKey: "rss_key") ?? ""
-        //dataの末尾の,を削除
-        print("MainViewModel:\(data)")
-        data.removeLast()
+        if !data.isEmpty{
+            data.removeLast()
+        }
         let rssList = data.components(separatedBy: ",")
-        print("MainViewModel:\(rssList)")
         for _ in 0..<rssList.count{dispatchGroup.enter()}
         for rss in rssList {
             //指定したRSSをJSONに変換するAPIと連結して取得する
