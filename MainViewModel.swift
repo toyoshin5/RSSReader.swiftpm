@@ -44,7 +44,6 @@ class MainViewModel: ObservableObject {
                         for item in items {
                             self.article.append(Article(item: item, feed: feed))
                         }
-                        print("leave")
                         dispatchGroup.leave()
                     
                     }

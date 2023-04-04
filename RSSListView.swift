@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RSSListView: View {
-    @ObservedObject var vm = RSSListViewModel()
+    @StateObject var vm = RSSListViewModel()
     var body: some View {
         // リストを表示
         NavigationStack {

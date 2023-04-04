@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddRSSView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var text: String = ""
+    @StateObject var vm = AddRSSViewModel()
     var body: some View {
         //URLを入力するページ
         VStack (alignment: .leading) {
@@ -18,7 +18,7 @@ struct AddRSSView: View {
                 .bold()
             Text("RSSのURLを入力してください")
             HStack{
-                TextField("URL", text: self.$text)
+                TextField("URL", text: self.$vm.text)
                     .overlay(
                         RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
                             .stroke(Color.gray, lineWidth: 2.0)
@@ -26,16 +26,8 @@ struct AddRSSView: View {
                     )
                     .padding(8.0)
                 Button(action: {
-                    //バリデーション
-                    //データが英数字と.と/だけだったら追加
-                    if text.range(of: "[^a-zA-Z0-9/.:_-]", options: .regularExpression) == nil {
-                        var data = UserDefaults.standard.string(forKey: "rss_key") ?? ""
-                        
-                        data += text + ","
-                        UserDefaults.standard.set(data, forKey: "rss_key")
-                        dismiss()
-                    }
-                
+                    vm.onTapAdd()
+                    dismiss()
                 }) {
                     Text("追加")
                         .bold()

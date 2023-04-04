@@ -2,7 +2,7 @@ import SwiftUI
 
 
 struct MainView: View {
-    @ObservedObject var vm = MainViewModel()
+    @StateObject var vm = MainViewModel()
     var body: some View {
         NavigationStack {
             ZStack{
@@ -52,7 +52,7 @@ struct MainView: View {
                             
                         }
                     }
-                }.navigationBarTitle("Articles")
+                }.navigationBarTitle("Feeds")
                     .refreshable {
                         //配列が空で無くなるまで非同期待機
                         try! await Task.sleep(nanoseconds: 1 * 600 * 1000 * 1000)
