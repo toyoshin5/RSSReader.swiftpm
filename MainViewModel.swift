@@ -9,7 +9,6 @@ import SwiftUI
 
 class MainViewModel: ObservableObject {
     @Published var article = [Article]()
-    var thumbnailDict: Dictionary<String, Int> = [:]
     
     func loadData() {
         Task.detached {
@@ -27,44 +26,43 @@ class MainViewModel: ObservableObject {
         for rss in rssList {
             //^がある場合は、その後ろの数字を変数に代入して、rssの^以降を削除
             var r = rss
+            var num:Int?
             if rss.contains("^"){
                 let index = rss.firstIndex(of: "^")!
-                let num = Int(rss[index...].dropFirst())
+                num = Int(rss[index...].dropFirst())
                 r = String(rss[..<index])
-                thumbnailDict[r] = num
             }
+            let thumbnailNum = num
             
             //指定したRSSをJSONに変換するAPIと連結して取得する
-            let url: URL =  URL(string:"https://api.rss2json.com/v1/api.json?rss_url=\(r)")!
-            let task: URLSessionTask = URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
-                //データ取得チェック
-                if let data = data {
-                    //JSON→Responseオブジェクト変換
-                    let decoder = JSONDecoder()
-                    guard let decodedResponse = try? decoder.decode(Response.self, from: data) else {
-                        print("Decode failed")
-                        //アラートを出す
-                        
-                        return
-                    }
-                    //RSS情報をUIに適用
-                    let items = decodedResponse.items
-                    let feed = decodedResponse.feed
-                    Task{
-                        @MainActor in
-                        for item in items {
-                            self.article.append(Article(item: item, feed: feed))
+                let url: URL =  URL(string:"https://api.rss2json.com/v1/api.json?rss_url=\(r)")!
+            Task{
+                do{
+                    let (data,_) = try await URLSession.shared.data(from: url)
+                        //JSON→Responseオブジェクト変換
+                        let decoder = JSONDecoder()
+                        guard let decodedResponse = try? decoder.decode(Response.self, from: data) else {
+                            print("Decode failed")
+                            //アラートを出す
+                            
+                            return
                         }
-                        dispatchGroup.leave()
-                    
-                    }
-                } else {
+                        //RSS情報をUIに適用
+                        let items = decodedResponse.items
+                        let feed = decodedResponse.feed
+                        Task{
+                            @MainActor in
+                            for item in items {
+                                self.article.append(Article(item: item, feed: feed,thumbnailNum: thumbnailNum))
+                            }
+                            dispatchGroup.leave()
+                            
+                        }
+                }catch{
                     //データが取得できなかった場合の処理
-                    print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
+                    print("クライアントエラー: \(error.localizedDescription)")
                 }
-                
-            })
-            task.resume()
+            }
         }
         //dispatchGroupが終わったら実行
         dispatchGroup.notify(queue: .main) {
@@ -112,22 +110,19 @@ class MainViewModel: ObservableObject {
                         }
                         let image = try Data(contentsOf: srcurl)
                         //画像の横のサイズが縦の3倍以上だったらタイトルとみなす
-                        if UIImage(data: image)!.size.width < UIImage(data: image)!.size.height * 3 {
-                            //画像を取得しない
-                            
-                            return
-                        }
-                        DispatchQueue.main.async {
-                            if self.article.count > i{
-                                self.article[i].image = Image(uiImage: UIImage(data: image)!)
+                        if let uiimg = UIImage(data: image){
+                            if uiimg.size.width > UIImage(data: image)!.size.height * 3 {
+                                DispatchQueue.main.async {
+                                    if self.article.count > i{
+                                        self.article[i].image = Image(uiImage: UIImage(data: image)!)
+                                    }
+                                }
                             }
                         }
                     }
                     //thumbnailDictの値があれば、その番号の画像を取得
-                    let siteURL = self.article[i].feed.link.absoluteString
-                    for (key, value) in self.thumbnailDict {
-                        if key.contains(String(siteURL.prefix(15))) {
-                            let src2 = (html as NSString).substring(with: matches[value].range(at: 1))
+                    if let num = self.article[i].thumbnailNum {
+                            let src2 = (html as NSString).substring(with: matches[num].range(at: 1))
                             if let srcurl = URL(string: src2) {
                                 if !srcurl.absoluteString.hasPrefix("http") {
                                     return
@@ -141,7 +136,7 @@ class MainViewModel: ObservableObject {
                                 }
                             }
                         }
-                    }
+            
                 } catch {
                     print(error)
                 }

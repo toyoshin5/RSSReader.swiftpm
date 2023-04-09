@@ -28,6 +28,7 @@ struct Article{
     let item: Result
     let feed: Feed
     var image:Image?
+    var thumbnailNum:Int?
     var thumbnail:Image?
 }
 

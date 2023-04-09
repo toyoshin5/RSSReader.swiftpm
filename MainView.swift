@@ -25,7 +25,7 @@ struct MainView: View {
                                     image
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(maxHeight:18)
+                                        .frame(maxHeight:16)
                                 }else{
                                     if !a.feed.title.isEmpty{
                                         Text(a.feed.title)
@@ -37,7 +37,7 @@ struct MainView: View {
                                 if !a.item.title.isEmpty{
                                     Text(a.item.title)      //記事タイトル
                                         .font(.headline)
-                                        .lineLimit(2)
+                                        .lineLimit(3)
                                 }
 //                                if !a.item.description.isEmpty{
 //                                    Text(a.item.description)      //記事説明
@@ -80,7 +80,7 @@ struct MainView: View {
                     }
         
             }
-        }.onAppear(perform: vm.loadData)
+    }.onAppear(perform: vm.loadData)
     }
 }
 
