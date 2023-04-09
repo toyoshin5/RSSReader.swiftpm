@@ -18,38 +18,53 @@ struct MainView: View {
                     NavigationLink{
                         WebView(url: a.item.link)
                     }label: {
-                        VStack(alignment: .leading,spacing: 5){
-                            //サイト名
-                            if let image = a.image {
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxHeight:18)
-                            }else{
-                                if !a.feed.title.isEmpty{
-                                    Text(a.feed.title)
+                        HStack {
+                            VStack(alignment: .leading,spacing: 5){
+                                //サイト名
+                                if let image = a.image {
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(maxHeight:18)
+                                }else{
+                                    if !a.feed.title.isEmpty{
+                                        Text(a.feed.title)
+                                            .font(.subheadline)
+                                            .bold()
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                if !a.item.title.isEmpty{
+                                    Text(a.item.title)      //記事タイトル
+                                        .font(.headline)
+                                        .lineLimit(2)
+                                }
+//                                if !a.item.description.isEmpty{
+//                                    Text(a.item.description)      //記事説明
+//                                        .font(.subheadline)
+//                                        .foregroundColor(.gray)
+//                                        .lineLimit(4)
+//                                }
+                                if !a.item.pubDate.isEmpty{
+                                    Text(a.item.pubDate)      //日付
                                         .font(.subheadline)
-                                        .bold()
                                         .foregroundColor(.gray)
                                 }
+                                
                             }
-                            if !a.item.title.isEmpty{
-                                Text(a.item.title)      //記事タイトル
-                                    .font(.headline)
-                                    .lineLimit(2)
+                            //角丸正方形の画像
+                            VStack{
+                                if let image = a.thumbnail {
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width:80, height:80, alignment: .center)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .shadow(radius: 3)
+                                        .padding(.top,16)
+                                }
+                                Spacer()
                             }
-                            if !a.item.description.isEmpty{
-                                Text(a.item.description)      //記事説明
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                    .lineLimit(4)
-                            }
-                            if !a.item.pubDate.isEmpty{
-                                Text(a.item.pubDate)      //日付
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                            }
-                            
                         }
                     }
                 }.navigationBarTitle("Feeds")

@@ -15,11 +15,15 @@ enum CheckState{
 
 class AddRSSViewModel:ObservableObject{
     @Published var text: String = ""
-    @Published var images:[Image] = []
-    @Published var accessState:CheckState = .success
-    @Published var syntaxState:CheckState = .checking
+    @Published var accessState:CheckState = .error
+    @Published var syntaxState:CheckState = .error
     @Published var isConfirmed: Bool = false
+    @Published var feedImages: [Image] = []
+    @Published var selectedImageNum: Int?
+    var validImageList:[Int] = []
     func onTapConfirm(){
+        feedImages = []
+        selectedImageNum = nil
         isConfirmed = true
         accessState = .checking
         syntaxState = .checking
@@ -90,29 +94,48 @@ class AddRSSViewModel:ObservableObject{
                             self.syntaxState = .error
                         }
                     }
-                    //urlではなかったら取得しない
-//                    //urlではなかったら取得しない
-//                    if let srcurl = URL(string: src) {
-//                        if !srcurl.absoluteString.hasPrefix("http") {
-//                            return
-//                        }
-//                        let image = try! Data(contentsOf: srcurl)
-//                        //画像の横のサイズが縦の3倍以上だったらタイトルとみなす
-//                        if UIImage(data: image)!.size.width < UIImage(data: image)!.size.height * 3 {
-//                            //画像を取得しない
-//
-//                            return
-//                        }
-//                        DispatchQueue.main.async {
-//                            if self.article.count > i{
-//                                self.article[i].image = Image(uiImage: UIImage(data: image)!)
-//                            }
-//                        }
-//                    }
+                    var c = 0
+                    for match in matches {
+                        let src = (html as NSString).substring(with: match.range(at: 1))
+                        print("src:\(src)")
+                        //urlではなかったら取得しない
+                        if let srcurl = URL(string: src){
+                            if let image = try? Data(contentsOf: srcurl){
+                                if let uiimage = UIImage(data: image){
+                                    DispatchQueue.main.async {
+                                        self.feedImages.append(Image(uiImage: uiimage))
+                                        self.validImageList.append(c)
+                                        c+=1
+                                    }
+                                    continue
+                                }
+                            }
+                        }
+                        DispatchQueue.main.async {
+                            self.validImageList.append(-1)
+                        }
+                    }
                 } catch {
-                    self.syntaxState = .error
+                    Task.detached{@MainActor in
+                        self.syntaxState = .error
+                    }
                 }
             }
         
+    }
+    func onTapBtmButton(){
+        if let num = selectedImageNum{
+            //vaidImageListのなかでnumと一致する要素の添字
+            let index = validImageList.firstIndex(of: num)!
+            print("num:\(num) index:\(index)")
+            var data = UserDefaults.standard.string(forKey: "rss_key") ?? ""
+            data += text + "^" + String(index) + ","
+            UserDefaults.standard.set(data, forKey: "rss_key")
+            print("data",data)
+        }else{
+            var data = UserDefaults.standard.string(forKey: "rss_key") ?? ""
+            data += text + ","
+            UserDefaults.standard.set(data, forKey: "rss_key")
+        }
     }
 }

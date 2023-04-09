@@ -14,8 +14,8 @@
             filePath = "MainViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "sorting()"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "MainViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "sorting()"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "MainViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "loadData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,9 +62,137 @@
             filePath = "MainViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "loadData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EC99B792-8F73-4420-B952-4A3B44B76BEB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AddRSSViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "fetchImage(url:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EC99B792-8F73-4420-B952-4A3B44B76BEB - dcc06e2e52eab82d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in &#x30de;&#x30a4;App.AddRSSViewModel.fetchImage(url: Foundation.URL) -&gt; ()"
+                  moduleName = "&#x30de;&#x30a4;App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/toyoshin/Library/Mobile%20Documents/iCloud~com~apple~Playgrounds/Documents/%E3%83%9E%E3%82%A4App%20%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.swiftpm/AddRSSViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "460">
+               </Location>
+               <Location
+                  uuid = "EC99B792-8F73-4420-B952-4A3B44B76BEB - dcc06e2e52eab8c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in &#x30de;&#x30a4;App.AddRSSViewModel.fetchImage(url: Foundation.URL) -&gt; ()"
+                  moduleName = "&#x30de;&#x30a4;App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/toyoshin/Library/Mobile%20Documents/iCloud~com~apple~Playgrounds/Documents/%E3%83%9E%E3%82%A4App%20%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.swiftpm/AddRSSViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "82"
+                  endingLineNumber = "82"
+                  offsetFromSymbolStart = "456">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DA4E4734-D503-4920-8250-39E191A42719"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MainViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "loadData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AD442E0A-A580-49F8-AA48-49AAE8F6DD75"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MainViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "fetchImage()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AD442E0A-A580-49F8-AA48-49AAE8F6DD75 - 533a463f9f6b1b7b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in &#x30de;&#x30a4;App.MainViewModel.fetchImage() -&gt; ()"
+                  moduleName = "&#x30de;&#x30a4;App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/toyoshin/Library/Mobile%20Documents/iCloud~com~apple~Playgrounds/Documents/%E3%83%9E%E3%82%A4App%20%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.swiftpm/MainViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "3244">
+               </Location>
+               <Location
+                  uuid = "AD442E0A-A580-49F8-AA48-49AAE8F6DD75 - 533a463f9f6b1b7b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in &#x30de;&#x30a4;App.MainViewModel.fetchImage() -&gt; ()"
+                  moduleName = "&#x30de;&#x30a4;App"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/toyoshin/Library/Mobile%20Documents/iCloud~com~apple~Playgrounds/Documents/%E3%83%9E%E3%82%A4App%20%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.swiftpm/MainViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "3236">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D49CFF49-6E5F-4DE6-9DEE-9218475F85AE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AddRSSViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "fetchImage(url:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

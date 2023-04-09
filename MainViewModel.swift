@@ -9,6 +9,8 @@ import SwiftUI
 
 class MainViewModel: ObservableObject {
     @Published var article = [Article]()
+    var thumbnailDict: Dictionary<String, Int> = [:]
+    
     func loadData() {
         Task.detached {
             @MainActor in
@@ -23,8 +25,17 @@ class MainViewModel: ObservableObject {
         let rssList = data.components(separatedBy: ",")
         for _ in 0..<rssList.count{dispatchGroup.enter()}
         for rss in rssList {
+            //^がある場合は、その後ろの数字を変数に代入して、rssの^以降を削除
+            var r = rss
+            if rss.contains("^"){
+                let index = rss.firstIndex(of: "^")!
+                let num = Int(rss[index...].dropFirst())
+                r = String(rss[..<index])
+                thumbnailDict[r] = num
+            }
+            
             //指定したRSSをJSONに変換するAPIと連結して取得する
-            let url: URL =  URL(string:"https://api.rss2json.com/v1/api.json?rss_url=\(rss)")!
+            let url: URL =  URL(string:"https://api.rss2json.com/v1/api.json?rss_url=\(r)")!
             let task: URLSessionTask = URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
                 //データ取得チェック
                 if let data = data {
@@ -93,13 +104,13 @@ class MainViewModel: ObservableObject {
                     //正規表現で画像を取得(ここ激ヤバ)
                     let regex = try NSRegularExpression(pattern: "<img.+?src=[\"'](.+?)[\"'].*?>", options: .caseInsensitive)
                     let matches = regex.matches(in: html, options: [], range: NSRange(location: 0, length: html.utf16.count))
-                    let src = (html as NSString).substring(with: matches[0].range(at: 1))
+                    let src1 = (html as NSString).substring(with: matches[0].range(at: 1))
                     //urlではなかったら取得しない
-                    if let srcurl = URL(string: src) {
+                    if let srcurl = URL(string: src1) {
                         if !srcurl.absoluteString.hasPrefix("http") {
                             return
                         }
-                        let image = try! Data(contentsOf: srcurl)
+                        let image = try Data(contentsOf: srcurl)
                         //画像の横のサイズが縦の3倍以上だったらタイトルとみなす
                         if UIImage(data: image)!.size.width < UIImage(data: image)!.size.height * 3 {
                             //画像を取得しない
@@ -109,6 +120,25 @@ class MainViewModel: ObservableObject {
                         DispatchQueue.main.async {
                             if self.article.count > i{
                                 self.article[i].image = Image(uiImage: UIImage(data: image)!)
+                            }
+                        }
+                    }
+                    //thumbnailDictの値があれば、その番号の画像を取得
+                    let siteURL = self.article[i].feed.link.absoluteString
+                    for (key, value) in self.thumbnailDict {
+                        if key.contains(String(siteURL.prefix(15))) {
+                            let src2 = (html as NSString).substring(with: matches[value].range(at: 1))
+                            if let srcurl = URL(string: src2) {
+                                if !srcurl.absoluteString.hasPrefix("http") {
+                                    return
+                                }
+                                if let image = try? Data(contentsOf: srcurl){
+                                    DispatchQueue.main.async {
+                                        if self.article.count > i{
+                                            self.article[i].thumbnail = Image(uiImage: UIImage(data: image)!)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

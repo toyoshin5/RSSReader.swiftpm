@@ -29,14 +29,14 @@ struct AddRSSView: View {
                     vm.onTapConfirm()
                     //dismiss()
                 }) {
-                    Text("Confirm")
+                    Text("確認")
                         .bold()
                         .padding()
                         .frame(width: 100)
                         .foregroundColor(Color(.systemBackground))
                         .background(Color(.label))
                         .cornerRadius(10)
-                }
+                }.disabled(vm.accessState == .checking || vm.syntaxState == .checking)
             }
             Divider()
             if vm.isConfirmed{
@@ -45,7 +45,20 @@ struct AddRSSView: View {
                 ValidationView(checkState: $vm.syntaxState,
                                checkMsg: "記事のサムネイルを確認中...", successMsg: "記事のサムネイルを利用可能です", errorMsg: "記事のサムネイルは利用できません")
             }
-            Spacer()
+            //スクロール可能で、3列に並んだ画像を1つ選択する部分
+            ImageListView(images: $vm.feedImages, selectedImageNum: $vm.selectedImageNum)
+            Button(action: {
+                vm.onTapBtmButton()
+                dismiss()
+            }) {
+                Text("この画像をサムネイルとして使用")
+                    .bold()
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .foregroundColor(Color(.systemBackground))
+                    .background(Color(.label))
+                    .cornerRadius(10)
+            }.disabled(vm.accessState != .success)
         }.padding()
     }
 }
@@ -79,6 +92,28 @@ struct ValidationView: View {
                     .foregroundColor(.red)
                     .frame(height: 20)
                 Text(errorMsg)
+            }
+        }
+    }
+}
+
+struct ImageListView: View {
+
+    @Binding var images:[Image]
+    @Binding var selectedImageNum: Int?
+    
+    var body: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
+                ForEach (0..<images.count,id: \.self) { i in
+                    images[i]
+                    .resizable()
+                        .scaledToFit()
+                        .onTapGesture {
+                            selectedImageNum = i
+                        }
+                        .border(i == selectedImageNum ? Color.blue : Color.clear, width: 2)
+                }
             }
         }
     }
