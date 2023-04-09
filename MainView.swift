@@ -51,7 +51,7 @@ struct MainView: View {
                                         .foregroundColor(.gray)
                                 }
                                 
-                            }
+                            }.frame(minWidth: 0, maxWidth: .infinity,alignment: .leading)
                             //角丸正方形の画像
                             VStack{
                                 if let image = a.thumbnail {
