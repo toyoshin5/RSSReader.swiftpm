@@ -26,10 +26,10 @@ struct AddRSSView: View {
                     )
                     .padding(8.0)
                 Button(action: {
-                    vm.onTapAdd()
-                    dismiss()
+                    vm.onTapConfirm()
+                    //dismiss()
                 }) {
-                    Text("追加")
+                    Text("Confirm")
                         .bold()
                         .padding()
                         .frame(width: 100)
@@ -38,6 +38,13 @@ struct AddRSSView: View {
                         .cornerRadius(10)
                 }
             }
+            Divider()
+            if vm.isConfirmed{
+                ValidationView(checkState: $vm.accessState
+                               , checkMsg: "記事の取得を確認中...", successMsg: "記事を取得可能です", errorMsg: "記事を取得できませんでした")
+                ValidationView(checkState: $vm.syntaxState,
+                               checkMsg: "記事のサムネイルを確認中...", successMsg: "記事のサムネイルを利用可能です", errorMsg: "記事のサムネイルは利用できません")
+            }
             Spacer()
         }.padding()
     }
@@ -45,5 +52,34 @@ struct AddRSSView: View {
 struct AddRSSView_Previews: PreviewProvider {
     static var previews: some View {
         AddRSSView()
+    }
+}
+
+struct ValidationView: View {
+    @Binding var checkState: CheckState
+    var checkMsg:String
+    var successMsg:String
+    var errorMsg:String
+    var body: some View {
+        HStack{
+            if checkState == .checking{
+                ProgressView()
+                    .padding(
+                        EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 2)
+                        )
+                    .frame(height: 20)
+                Text(checkMsg)
+            }else if checkState == .success{
+                Image(systemName: "checkmark.circle")
+                    .foregroundColor(.green)
+                    .frame(height: 20)
+                Text(successMsg)
+            }else if checkState == .error{
+                Image(systemName: "xmark.circle")
+                    .foregroundColor(.red)
+                    .frame(height: 20)
+                Text(errorMsg)
+            }
+        }
     }
 }
