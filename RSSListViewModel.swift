@@ -16,6 +16,7 @@ class RSSListViewModel: ObservableObject{
         if !data.isEmpty{
             data.removeLast()
         }
+        print(data)
         let rssListData = data.split(separator: ",")
         for rssData in rssListData{
             let rss = RSSListModel(url: String(rssData))
