@@ -29,5 +29,6 @@ struct BottomTabView: View {
 struct BottomTabView_Previews: PreviewProvider {
     static var previews: some View {
         BottomTabView()
+            .previewDevice("iPhone 14 Pro")
     }
 }

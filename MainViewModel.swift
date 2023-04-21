@@ -65,8 +65,7 @@ class MainViewModel: ObservableObject {
             }
         }
         //dispatchGroupが終わったら実行
-        dispatchGroup.notify(queue: .main) {
-            print("notify")
+        dispatchGroup.notify(queue: .main){
             //pubDateが新しい順に並べる
             self.sorting()
             //非同期で画像を取得

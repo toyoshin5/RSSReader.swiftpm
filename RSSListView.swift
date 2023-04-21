@@ -15,8 +15,13 @@ struct RSSListView: View {
             List{
                 ForEach(vm.rssList) { item in
                     VStack(alignment: .leading) {
-                        Text(item.url)
+                        Text(vm.deleteParam(url: item.url))
                             .font(.headline)
+                    }.onTapGesture {
+                        //コピー
+                        UIPasteboard.general.string = vm.deleteParam(url: item.url)
+                        //コピーしましたを表示
+                        vm.showCopiedAlert()
                     }
                 }.onDelete(perform: vm.rowRemove)
             }.onAppear {
@@ -35,7 +40,7 @@ struct RSSListView: View {
                         }
                         ) {
                             AddRSSView()
-                                .presentationDetents([.medium,.large])
+                                .presentationDetents([.height(600),.large])
                         }
                     }
                 }

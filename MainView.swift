@@ -39,7 +39,7 @@ struct MainView: View {
                                         .font(.headline)
                                         .lineLimit(3)
                                 }
-//                                if !a.item.description.isEmpty{
+//                                if !a.item.description.isEmpty{l
 //                                    Text(a.item.description)      //記事説明
 //                                        .font(.subheadline)
 //                                        .foregroundColor(.gray)

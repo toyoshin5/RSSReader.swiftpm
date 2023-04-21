@@ -17,6 +17,9 @@ struct AddRSSView: View {
                 .font(.title)
                 .bold()
             Text("RSSのURLを入力してください")
+            Text("例:https://news.yahoo.co.jp/rss/topics/top-picks.xml")
+                .font(.caption)
+                .foregroundColor(.gray)
             HStack{
                 TextField("URL", text: self.$vm.text)
                     .overlay(
@@ -36,19 +39,25 @@ struct AddRSSView: View {
                         .foregroundColor(Color(.systemBackground))
                         .background(Color(.label))
                         .cornerRadius(10)
-                }.disabled(vm.accessState == .checking || vm.syntaxState == .checking)
+                }.disabled(vm.accessState == .checking || vm.thumbnailState == .checking)
             }
             Divider()
             if vm.isConfirmed{
                 ValidationView(checkState: $vm.accessState
                                , checkMsg: "記事の取得を確認中...", successMsg: "記事を取得可能です", errorMsg: "記事を取得できませんでした")
-                ValidationView(checkState: $vm.syntaxState,
+                ValidationView(checkState: $vm.thumbnailState,
                                checkMsg: "記事のサムネイルを確認中...", successMsg: "記事のサムネイルを利用可能です", errorMsg: "記事のサムネイルは利用できません")
+            }
+            if vm.thumbnailState == .success {
+                Text("サムネイル選択").font(.title2).bold()
+                Text("このURLでは、ニュース記事中の特定の位置の画像の1枚をサムネイル画像として使用できます。この記事のタイトルで使用されているサムネイル画像を選択してください。").font(.caption).foregroundColor(.gray)
+                
+                Text("タイトル: \(vm.feedTitle)")
             }
             //スクロール可能で、3列に並んだ画像を1つ選択する部分
             ImageListView(images: $vm.feedImages, selectedImageNum: $vm.selectedImageNum)
             Button(action: {
-                vm.onTapBtmButton()
+                vm.onTapBtmButton(hasThumbnail: true)
                 dismiss()
             }) {
                 Text("この画像をサムネイルとして使用")
@@ -56,9 +65,21 @@ struct AddRSSView: View {
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
                     .foregroundColor(Color(.systemBackground))
-                    .background(Color(.label))
+                    .background((vm.thumbnailState != .success || vm.selectedImageNum == nil) ? Color(.systemGray) : Color(.label))
+                    .cornerRadius(10)
+            }.disabled(vm.thumbnailState != .success || vm.selectedImageNum == nil)
+            Button(action: {
+                vm.onTapBtmButton(hasThumbnail: false)
+                dismiss()
+            }) {
+                Text("サムネイルを使用せずに登録")
+                    .bold()
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .foregroundColor((vm.accessState == .success) ? Color(.label) : Color(.systemGray))
                     .cornerRadius(10)
             }.disabled(vm.accessState != .success)
+        
         }.padding()
     }
 }
